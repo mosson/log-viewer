@@ -24,7 +24,7 @@ set :deploy_to, "/var/www/rails/#{application}"
 set :deploy_via, :remote_cache
 set :ssh_options, { :forward_agent => true }
 set :deploy_via, :remote_cache
-set :shared_children, shared_children + %w{db}
+# set :shared_children, shared_children + %w{db}
 
 # If you had problem with following error
 # "no tty present and no askpass program specified", comment this out!
@@ -49,4 +49,9 @@ namespace :deploy do
 		# run "kill -s SIGINT `cat /tmp/#{application}.pid`"
     run "cd #{current_path};rackup -D -P /tmp/#{application}.pid"
   end
+end
+
+namespace :bundle do
+	task :install do
+	end
 end
