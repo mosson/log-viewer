@@ -26,6 +26,7 @@ set :deploy_via, :remote_cache
 # If you had problem with following error
 # "no tty present and no askpass program specified", comment this out!
 default_run_options[:pty] = true
+set :bundle_flags, "--no-deployment"
 
 # if you want to clean up old releases on each deploy uncomment this:
 # after "deploy:restart", "deploy:cleanup"
@@ -34,10 +35,15 @@ default_run_options[:pty] = true
 # these http://github.com/rails/irs_process_scripts
 
 # If you are using Passenger mod_rails uncomment this:
-# namespace :deploy do
-#   task :start do ; end
-#   task :stop do ; end
-#   task :restart, :roles => :app, :except => { :no_release => true } do
-#     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-#   end
-# end
+namespace :deploy do
+  task :start do
+  	run "cd #{current_path};rackup -D -P /tmp/#{application}.pid"
+ 	end
+  task :stop do
+  	run "kill -s SIGINT `cat /tmp/#{application}.pid`"
+  end
+  task :restart do
+		# run "kill -s SIGINT `cat /tmp/#{application}.pid`"
+    run "cd #{current_path};rackup -D -P /tmp/#{application}.pid"
+  end
+end

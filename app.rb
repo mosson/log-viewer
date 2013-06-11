@@ -5,9 +5,12 @@ require './lib/sinatra/paginate'
 require './log'
 require 'octokit'
 require 'yaml'
+require 'haml'
 
 
 TARGET_REPO = "a-munakata/sinatra-app"
+
+Struct.new("Result", :total, :size, :logs)
 
 class SinatraApp < Sinatra::Base
 	register Sinatra::Paginate
@@ -18,8 +21,6 @@ class SinatraApp < Sinatra::Base
 		end
 	end
 end
-
-Struct.new("Result", :total, :size, :logs)
 
 get "/" do
 	@logs = Log.all

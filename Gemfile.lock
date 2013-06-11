@@ -30,6 +30,7 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.4)
     arel (3.0.2)
+    backports (3.3.1)
     builder (3.0.4)
     capistrano (2.15.4)
       highline
@@ -48,12 +49,15 @@ GEM
       execjs
     coffee-script-source (1.6.2)
     erubis (2.7.0)
+    eventmachine (1.0.3)
     execjs (1.4.0)
       multi_json (~> 1.0)
     faraday (0.8.7)
       multipart-post (~> 1.1)
     faraday_middleware (0.9.0)
       faraday (>= 0.7.4, < 0.9)
+    haml (4.0.1)
+      tilt
     hashie (2.0.5)
     highline (1.6.19)
     hike (1.2.3)
@@ -124,6 +128,13 @@ GEM
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
+    sinatra-contrib (1.4.0)
+      backports (>= 2.0)
+      eventmachine
+      rack-protection
+      rack-test
+      sinatra (~> 1.4.2)
+      tilt (~> 1.3)
     sinatra-paginate (0.1.0)
       sinatra
     sprockets (2.2.2)
@@ -151,13 +162,14 @@ DEPENDENCIES
   capistrano-ext
   capistrano_colors
   coffee-rails (~> 3.2.1)
+  haml
   jquery-rails
   octokit
   rails (= 3.2.11)
   rvm-capistrano
   sass-rails (~> 3.2.3)
   sinatra
+  sinatra-contrib
   sinatra-paginate
   sqlite3
   uglifier (>= 1.0.3)
-  

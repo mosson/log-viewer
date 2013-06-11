@@ -3,8 +3,10 @@ source 'https://rubygems.org'
 gem 'sinatra'
 gem 'activerecord'
 gem 'sinatra-paginate'
+gem 'sinatra-contrib'
 gem 'octokit'
 gem 'rails', '3.2.11'
+gem 'haml'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
