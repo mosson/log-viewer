@@ -27,7 +27,14 @@ get "/" do
 	haml :index
 end
 
-get "/env/:environment" do	
+post '/issue' do  
+	client = Octokit::Client.new login: ENV["GITHUB_USER"], password: ENV["GITHUB_PASSWORD"]
+	api_response = client.create_issue TARGET_REPO, params[:title], params[:body]
+	api_response = client.create_issue TARGET_REPO, params[:title], params[:body] unless params[:title].nil? && params[:body].nil?
+	redirect api_response.html_url
+end
+
+get "/env/:environment" do
 	@production_logs = Log.where(:environment => params[:environment]).limit(10).offset(page * 10)
 	@logs_total 		 = Log.where(:environment => params[:environment])	
 	@result 				 = Struct::Result.new(@logs_total.count, @production_logs.count, @production_logs)

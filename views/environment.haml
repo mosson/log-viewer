@@ -4,7 +4,7 @@
   - @result.logs.each do |log|
     %p= log.timestamp
     %pre= log.entry
-    %form(action="/issue" method="post")      
+    %form(action="/issue" method="post")
       %input(type="text" name="title")
       %input(type="text" name="body" value="#{log.entry}" class="hidden")
       %input(type="submit" value="Post an Issue")
