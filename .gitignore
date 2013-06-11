@@ -1,3 +1,4 @@
 db/production-*
 db/staging-*
 .DS_Store
+lib/
