@@ -1,10 +1,10 @@
 %h1
-  %a(href="/" title="TOP")
+  %a{:href => "/", :title => "TOP"}
 %p  
   = @logs.length
   Logs are stored
-  %ul
-    %li
-      %a(href="/env/production" title="PRODUCTION LOGS") PRODUCTION LOGS
-    %li
-      %a(href="/env/staging" title="STAGING LOGS") STAGING LOGS
+%ul
+  %li
+    %a{:href => "/env/production", :title => "PRODUCTION LOGS"} PRODUCTION LOGS
+  %li
+    %a{:href => "/env/staging", :title => "STAGING LOGS"} STAGING LOGS
