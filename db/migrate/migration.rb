@@ -5,11 +5,11 @@ ActiveRecord::Base.establish_connection :adapter => "sqlite3", :database => "./d
 class LogStore < ActiveRecord::Migration
 	def self.up
 		create_table 	:logs do |t|			
-			t.string 		:entry_id
+			t.integer		:entry_id
 			t.string 		:entry
 			t.datetime 	:timestamp
 			t.string		:environment
-			t.string 		:error_status
+			t.integer		:error_status
 		end
 	end
 end
