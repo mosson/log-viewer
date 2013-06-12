@@ -1,7 +1,8 @@
 !!!
 %html
-  %head
-    / = stylesheet_link_tag "src/stylesheets/style", media: "all"
+  %head    
     %title Sample App
+    %link{ :rel => "stylesheet", :href =>"../css/style.css" }
+    %link{ :rel => "stylesheet", :href =>"http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css" }
   %body
     != yield
