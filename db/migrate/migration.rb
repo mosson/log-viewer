@@ -1,6 +1,4 @@
-require 'active_record'
-
-ActiveRecord::Base.establish_connection :adapter => "sqlite3", :database => "./data.sqlite"
+require './log'
 
 class LogStore < ActiveRecord::Migration
 	def self.up

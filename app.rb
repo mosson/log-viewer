@@ -35,13 +35,12 @@ post '/issue' do
 end
 
 get "/env/:environment" do
-	@production_logs = Log.where(:environment => params[:environment]).limit(10).offset(page * 10)
+	@logs            = Log.where(:environment => params[:environment]).limit(10).offset(page * 10)
 	@logs_total 		 = Log.where(:environment => params[:environment])	
-	@result 				 = Struct::Result.new(@logs_total.count, @production_logs.count, @production_logs)
+	@result 				 = Struct::Result.new(@logs_total.count, @logs.count, @logs)
 	@title 					 = params[:environment]
 
 	haml :environment
-
 end
 
 post "/put" do
