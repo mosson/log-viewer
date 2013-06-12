@@ -9,6 +9,9 @@ class LogStore < ActiveRecord::Migration
 			t.string		:environment
 			t.integer		:error_status
 		end
+
+		add_index :logs, [:timestamp, :environment, :error_status], unique: true
+		
 	end
 end
 
