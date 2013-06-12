@@ -6,7 +6,7 @@ require './log'
 require 'octokit'
 require 'yaml'
 require 'haml'
-
+require 'sass'
 
 TARGET_REPO = "a-munakata/sinatra-app"
 
@@ -26,6 +26,11 @@ get "/" do
 	@logs = Log.all
 	@environments = ["production", "staging"]
 	haml :index
+end
+
+get '/style.css' do
+	content_type 'text/css', :charset => 'utf-8'
+	scss :stylesheet, :style => :compact
 end
 
 post '/issue' do  
