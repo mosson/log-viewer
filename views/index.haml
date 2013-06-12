@@ -4,7 +4,6 @@
   = @logs.length
   Logs are stored
 %ul
-  %li
-    %a{:href => "/env/production", :title => "PRODUCTION LOGS"} PRODUCTION LOGS
-  %li
-    %a{:href => "/env/staging", :title => "STAGING LOGS"} STAGING LOGS
+  = @environments.each do |env|
+    %li
+      %a{:href => "/env/#{env}", :title => "#{env} LOGS"} #{env} logs

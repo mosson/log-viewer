@@ -24,6 +24,7 @@ end
 
 get "/" do
 	@logs = Log.all
+	@environments = ["production", "staging"]
 	haml :index
 end
 
