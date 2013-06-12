@@ -72,6 +72,7 @@ nav.sidebar > ul > li > a {
 }
 article.content {
 	float: left;
+	margin-bottom: 40px;
 }
 article.content > .inner > div {
 	border-right: 1px solid #e8e8e8;
@@ -109,6 +110,7 @@ article.content > .inner > div > form.checkbox {
 	height: 100%;
 	top: 0px;
 	left: 0px;
+	z-index: 1;
 }
 article.content > .inner > div > form.checkbox > input{
 	width: 100%;
@@ -127,6 +129,7 @@ article.content > .inner > div > form.issue input.submit{
 	float: right;
 }
 article.content > .inner > div > form.checkbox span {
+	z-index: -1;
 	position: absolute;
 	top: 72px;
 	left: 17px;
@@ -140,4 +143,31 @@ article.content > .inner > div > form.checkbox input:checked ~ span {
 }
 article.content > .inner > div > form.checkbox input:checked + input {
 	display: block;
+}
+
+/* Paginate */
+
+ul.sinatra-pagination {
+	margin-left: 13px;
+	margin-top: 30px;
+	zoom: 1;
+}
+ul.sinatra-pagination:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+ul.sinatra-pagination > li {
+	background: #658684;
+	width: 16px;
+	height: 18px;
+	display: block;
+	font-size: 83%;
+	margin-right: 4px;
+	text-align: center;
+}
+ul.sinatra-pagination > li a {	
+	line-height: 18px;
+	text-decoration: none;
+	color: #fff;
 }
