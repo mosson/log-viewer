@@ -17,6 +17,7 @@ set :deploy_to, "/var/www/rails/#{application}"
 set :deploy_via, :remote_cache
 set :ssh_options, { :forward_agent => true }
 set :deploy_via, :remote_cache
+set :rack_env, :production
 # set :shared_children, shared_children + %w{db}
 
 require 'capistrano_colors'
