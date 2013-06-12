@@ -5,7 +5,7 @@ class LogStore < ActiveRecord::Migration
 		create_table 	:logs do |t|			
 			t.integer		:entry_id
 			t.string 		:entry
-			t.datetime 	:timestamp
+			t.integer 	:timestamp
 			t.string		:environment
 			t.integer		:error_status
 		end

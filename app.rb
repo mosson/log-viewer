@@ -35,8 +35,10 @@ post '/issue' do
 end
 
 get "/env/:environment" do
-	@logs            = Log.where(:environment => params[:environment]).limit(10).offset(page * 10)
-	@logs_total 		 = Log.where(:environment => params[:environment])	
+	# @logs            = Log.where(:environment => params[:environment]).limit(10).offset(page * 10)
+	# @logs_total 		 = Log.where(:environment => params[:environment])
+	@logs            = Log.limit(10).offset(page * 10)
+	@logs_total 		 = Log.all
 	@result 				 = Struct::Result.new(@logs_total.count, @logs.count, @logs)
 	@title 					 = params[:environment]
 

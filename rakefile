@@ -1,0 +1,5 @@
+namespace :hoge do
+	task :huga do
+		puts "foo"
+	end
+end

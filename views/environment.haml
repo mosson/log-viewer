@@ -1,6 +1,7 @@
 %h1= params[:environment]
 %a{:href => "/"} TOP
-%div  
+%p= @logs_total
+%div
   - @result.logs.each do |log|
     %p= log.timestamp
     %pre= log.entry
