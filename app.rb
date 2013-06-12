@@ -6,7 +6,6 @@ require './log'
 require 'octokit'
 require 'yaml'
 require 'haml'
-# require 'sass'
 
 TARGET_REPO = "a-munakata/sinatra-app"
 
@@ -29,7 +28,6 @@ get "/" do
 end
 
 get '/style.css' do
-	# scss :stylesheet, :style => :compact
 	css :stylesheet
 end
 
@@ -43,7 +41,7 @@ end
 get "/:environment" do
 	# @logs            = Log.where(:environment => params[:environment]).limit(10).offset(page * 10)
 	# @logs_total 		 = Log.where(:environment => params[:environment])
-	@logs            = Log.limit(10).offset(page * 10)
+	@logs            = Log.limit(10)
 	@logs_total 		 = Log.all
 	@result 				 = Struct::Result.new(@logs_total.count, @logs.count, @logs)
 	@title 					 = params[:environment]
@@ -54,22 +52,3 @@ end
 get "/env/css/styles.css" do
 	css :stylesheet
 end
-
-post "/put" do
-	data_yml = YAML.load_file("db/staging-20130601.yml")
-	data_yml.each do |test|
-		test.each do |t|	
-			if t.instance_of?(Hash)
-				insert_data = Log.new( 
-         :entry 			 => t["entry"],
-				 :timestamp 	 => t["timestamp"], 
-				 :error_status => t["error_status"], 
-				 :environment  => t["environment"])
-
-				insert_data.save
-			end		
-		end
-	end
- 	redirect "/"
-end
-
