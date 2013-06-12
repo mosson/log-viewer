@@ -2,7 +2,7 @@
   %a.logo{:href => "/"} 
 
 %div.main
-  %div.inner
+  %div.inner.clearfix
     %nav.sidebar
       %ul        
         %li.even
@@ -13,12 +13,16 @@
       %div.inner
         / # %h1= params[:environment]
         - @result.logs.each do |log|
-          %div
-            %p= log.timestamp
-            %pre= log.entry
-            %form(action="/issue" method="post")
+          %div.odd
+          %div.even
+            %form.checkbox(action="/checked" method="post")
+              %input(type="checkbox" name="checkbox")
+              %span
+            %p.timestamp= log.timestamp
+            %pre.entry= log.entry
+            %form.issue(action="/issue" method="post")
               %input(type="text" name="title")
               %input(type="text" name="body" value="#{log.entry}" class="hidden")
-              %input(type="submit" value="Post an Issue")
+              %input.submit(type="submit" value="Post an Issue")            
         = paginate @result
     

@@ -40,7 +40,7 @@ post '/issue' do
 	redirect api_response.html_url
 end
 
-get "/env/:environment" do
+get "/:environment" do
 	# @logs            = Log.where(:environment => params[:environment]).limit(10).offset(page * 10)
 	# @logs_total 		 = Log.where(:environment => params[:environment])
 	@logs            = Log.limit(10).offset(page * 10)
