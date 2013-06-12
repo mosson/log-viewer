@@ -31,14 +31,15 @@ set :bundle_flags, "--no-deployment"
 
 namespace :deploy do
   task :start do
-  	run "cd #{current_path};rackup -D -P /tmp/#{application}.pid"
+  	run "cd #{current_path};RACK_ENV=production rackup -D -P /tmp/#{application}.pid"
  	end
   task :stop do
   	run "kill -s SIGINT `cat /tmp/#{application}.pid`"
   end
   task :restart do
 		# run "kill -s SIGINT `cat /tmp/#{application}.pid`"
-    run "cd #{current_path};rackup -D -P /tmp/#{application}.pid"
+    run "if kill -0 `cat /tmp/#{application}.pid`; then kill -s SIGINT `cat /tmp/#{application}.pid`; else echo \"no\"; fi"
+    run "cd #{current_path};RACK_ENV=production rackup -D -P /tmp/#{application}.pid"
   end
 end
 
