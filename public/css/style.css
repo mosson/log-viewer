@@ -79,10 +79,10 @@ article.content > .inner > div {
 	padding: 20px 17px 20px 74px;
 	position: relative;
 }
-article.content > .inner > div.even {
+article.content > .inner > div:nth-child(2n+1) {
 	background: #fff;
 }
-article.content > .inner > div.odd {
+article.content > .inner > div:nth-child(2n) {
 	background: #f8f8f8;
 }
 article.content > .inner > div:hover {
@@ -94,26 +94,42 @@ article.content > .inner > div > pre.entry {
 	color: #707070;
 	font-size: 83%;
 	padding: 10px;
-
 }
 article.content > .inner > div > p.timestamp {
 	margin: 10px 0px 15px;
 	font-size: 100%;
 	font-family: Helvetica;
 }
+
+/* Forms */
+
 article.content > .inner > div > form.checkbox {
 	position: absolute;
-	top: 72px;
-	left: 17px;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+}
+article.content > .inner > div > form.checkbox > input{
+	width: 100%;
+	height: 100%;
+	opacity: 0;	
+	cursor: pointer;
 }
 article.content > .inner > div > form.issue {
-	display: none;
+	/*display: none;*/
 	margin-top: 15px;
+}
+article.content > .inner > div > form.issue input {
+	display: none;
 }
 article.content > .inner > div > form.issue input.submit{
 	float: right;
 }
 article.content > .inner > div > form.checkbox span {
+	position: absolute;
+	top: 72px;
+	left: 17px;
 	background-position: 0 0; width: 18px; height: 17px;
 	display: inline-block;
 	font-family: osaka;
@@ -122,4 +138,6 @@ article.content > .inner > div > form.checkbox span {
 article.content > .inner > div > form.checkbox input:checked ~ span {
 	background-position: 0 -67px;
 }
-
+article.content > .inner > div > form.checkbox input:checked + input {
+	display: block;
+}
