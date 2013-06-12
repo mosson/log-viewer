@@ -1,11 +1,24 @@
-%h1= params[:environment]
-%a{:href => "/"} TOP
-%div
-  - @result.logs.each do |log|
-    %p= log.timestamp
-    %pre= log.entry
-    %form(action="/issue" method="post")
-      %input(type="text" name="title")
-      %input(type="text" name="body" value="#{log.entry}" class="hidden")
-      %input(type="submit" value="Post an Issue")
-  = paginate @result
+%header
+  %a.logo{:href => "/"} 
+
+%div.main
+  %div.inner
+    %nav.sidebar
+      %ul        
+        %li.even
+          %a{:href => "production"}
+        %li.odd
+          %a{:href => "staging"}
+    %article.content
+      %div.inner
+        / # %h1= params[:environment]
+        - @result.logs.each do |log|
+          %div
+            %p= log.timestamp
+            %pre= log.entry
+            %form(action="/issue" method="post")
+              %input(type="text" name="title")
+              %input(type="text" name="body" value="#{log.entry}" class="hidden")
+              %input(type="submit" value="Post an Issue")
+        = paginate @result
+    

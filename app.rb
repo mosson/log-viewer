@@ -6,7 +6,7 @@ require './log'
 require 'octokit'
 require 'yaml'
 require 'haml'
-require 'sass'
+# require 'sass'
 
 TARGET_REPO = "a-munakata/sinatra-app"
 
@@ -29,8 +29,8 @@ get "/" do
 end
 
 get '/style.css' do
-	content_type 'text/css', :charset => 'utf-8'
-	scss :stylesheet, :style => :compact
+	# scss :stylesheet, :style => :compact
+	css :stylesheet
 end
 
 post '/issue' do  
@@ -48,7 +48,11 @@ get "/env/:environment" do
 	@result 				 = Struct::Result.new(@logs_total.count, @logs.count, @logs)
 	@title 					 = params[:environment]
 
-	haml :environment
+	haml :environment	
+end
+
+get "/env/css/styles.css" do
+	css :stylesheet
 end
 
 post "/put" do
