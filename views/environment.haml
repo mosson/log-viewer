@@ -1,27 +1,75 @@
 %header
-  %a.logo{:href => "/"} 
+  %a.logo{:href => "/"}
+    %span LOG TRACKER:: #{params[:environment].upcase}
+  %span.updated-date Last Updated At: 2013. 06. 12. 12:00:00
 
 %div.main
   %div.inner.clearfix
-    %nav.sidebar
-      %ul
-        %li.even
+    %nav.sidebar      
+      %ul{:class => "#{params[:environment]}"}
+        %li.production
           %a{:href => "production"}
-        %li.odd
+          %p.number-of-logs= Log.where(:environment => "production").count
+        %li.staging
           %a{:href => "staging"}
+          %p.number-of-logs= Log.where(:environment => "staging").count
     %article.content
+      %nav.clearfix
+        %ul.pagination.clearfix
+          - 3.times do
+            %li
+              %a{:href => "#"} 1          
+        %ul.sub-navigation.clearfix        
+          %li
+            %a{:href => "#"} OPEN
+          %li
+            %a{:href => "#"} CLOSED
+          %li                   
+            %label(for="pull-down-point")
+              %span
+                %span
+      %input(type="checkbox" id="pull-down-point")
+      %div.pull-down-navigation
+        %p SERACH CONDITION
+        %ul.clearfix
+          %li
+            %span.sub-title Backtrace
+            %form(action="/find" method="post")
+              %input.input-text(type="text" name="backtrace" placeholder="placeholder")
+              %input(type="submit" value="GO" id="go-button")
+              %label(for="go-button") GO
+          %li
+            %span.sub-title Status Code
+            %form(action="/find" method="post")
+              %input.input-text(type="text" name="status_code" placeholder="placeholder")
+              %input(type="submit" value="GO" id="go-button")
+              %label(for="go-button") GO
+          %li
+            %span.sub-title Timestamp
+            %form(action="/find" method="post")
+              %input.input-text(type="text" name="date_from" placeholder="DATE")
+              %span.icon-arrow
+              %input.input-text(type="text" name="date_to" placeholder="DATE")
+              %input(type="submit" value="GO" id="go-button")
+              %label(for="go-button") GO
       %div.inner
-        / # %h1= params[:environment]
         - @result.logs.each do |log|
           %div
+            %div.github-issued
             %form.checkbox(action="/checked" method="post")
-              %input(type="checkbox" name="checkbox")
-              %span              
+              %input(type="checkbox" name="checkbox" id="entry-checkbox#{log.id}")
+              %label(for="entry-checkbox#{log.id}")
+                %span
+              %span                      
             %p.timestamp= log.timestamp
             %pre.entry= log.entry
-            %form.issue(action="/issue" method="post")              
+            %form.issue(action="/issue" method="post")
               %input(type="text" name="title")
               %input(type="text" name="body" value="#{log.entry}" class="hidden")
               %input.submit(type="submit" value="Post an Issue")
         = paginate @result
+        %ul.pagination.clearfix
+          - 3.times do
+            %li
+              %a{:href => "#"} 1          
     
