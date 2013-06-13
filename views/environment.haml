@@ -56,20 +56,17 @@
         - @result.logs.each do |log|
           %div
             %div.github-issued
-            %form.checkbox(action="/checked" method="post")
-              %input(type="checkbox" name="checkbox" id="entry-checkbox#{log.id}")
-              %label(for="entry-checkbox#{log.id}")
-                %span
-              %span                      
             %p.timestamp= log.timestamp
             %pre.entry= log.entry
+            %input(type="checkbox" name="checkbox" id="entry-checkbox#{log.id}")
+            %form.checkbox(action="/checked" method="post")              
+              %label(for="entry-checkbox#{log.id}")
+                %span
+              %span                                  
             %form.issue(action="/issue" method="post")
               %input(type="text" name="title")
               %input(type="text" name="body" value="#{log.entry}" class="hidden")
+              %input(type="text" name="id" value="#{log.id}" class="hidden")
               %input.submit(type="submit" value="Post an Issue")
         = paginate @result
-        %ul.pagination.clearfix
-          - 3.times do
-            %li
-              %a{:href => "#"} 1          
     
