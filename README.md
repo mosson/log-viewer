@@ -27,5 +27,5 @@ Environment valiables
 
 - GITHUB_USER
 - GITHUB_PASSWORD
-
+- TARGET_REPO
 

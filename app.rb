@@ -7,7 +7,7 @@ require 'octokit'
 require 'yaml'
 require 'haml'
 
-TARGET_REPO = "a-munakata/sinatra-app"
+TARGET_REPO = "a-munakata/log-factory"
 
 Struct.new("Result", :total, :size, :logs)
 
@@ -31,21 +31,27 @@ get '/style.css' do
 	css :stylesheet
 end
 
-post '/issue' do  
+post '/issue' do
+	# Log.where(:id => params[:id])
 	client = Octokit::Client.new login: ENV["GITHUB_USER"], password: ENV["GITHUB_PASSWORD"]
-	api_response = client.create_issue TARGET_REPO, params[:title], params[:body]
 	api_response = client.create_issue TARGET_REPO, params[:title], params[:body] unless params[:title].nil? && params[:body].nil?
 	redirect api_response.html_url
 end
 
-get "/:environment" do
-	# @logs            = Log.where(:environment => params[:environment]).limit(10).offset(page * 10)
-	# @logs_total 		 = Log.where(:environment => params[:environment])
+post "/search" do
 	@logs            = Log.limit(10)
-	@logs_total 		 = Log.all
+	@logs_total 		 = Log.where(:error_status => params[:error_status])
+	@result 				 = Struct::Result.new(@logs_total.count, @logs.count, @logs)
+	haml :environment
+end
+
+get "/:environment" do
+	@logs            = Log.where(:environment => params[:environment])
+	@logs_total 		 = Log.where(:environment => params[:environment])
+	# @logs            = Log.where()
+	# @logs_total 		 = Log.all
 	@result 				 = Struct::Result.new(@logs_total.count, @logs.count, @logs)
 	@title 					 = params[:environment]
-
 	haml :environment	
 end
 
