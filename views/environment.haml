@@ -1,12 +1,23 @@
 %header
   %a.logo{:href => "/"}
-    %span LOG TRACKER:: #{params[:environment].upcase}
+    %span LOG TRACKER
+    - unless params[:environment].nil?
+      %span.location ::#{params[:environment].upcase}      
+    - else
+      - unless params[:status_code].nil?
+        %span.location ::Search::#{params[:status_code]}        
+      - unless params[:backtrace].nil?
+        %span.location ::Search::#{params[:backtrace]}
+      - unless params[:date_to].nil? && params[:data_from].nil?
+        %span.location ::Search::#{params[:date_from]}-#{params[:date_to]}
+
   %span.updated-date Last Updated At: 2013. 06. 12. 12:00:00
 
 %div.main
   %div.inner.clearfix
-    %nav.sidebar      
-      %ul{:class => "#{params[:environment]}"}
+    %nav.sidebar
+      / %ul{:class => "#{params[:environment]}"}
+      %ul
         %li.production
           %a{:href => "production"}
           %p.number-of-logs= Log.where(:environment => "production").count
@@ -34,24 +45,24 @@
         %ul.clearfix
           %li
             %span.sub-title Backtrace
-            %form(action="/find" method="post")
-              %input.input-text(type="text" name="backtrace" placeholder="placeholder")
-              %input(type="submit" value="GO" id="go-button")
-              %label(for="go-button") GO
+            %form(action="/search" method="post")
+              %input.basic-insert-text(type="text" name="backtrace" placeholder="placeholder")
+              %input.type-submit(type="submit" value="GO" id="submit-button-backtrace")
+              %label.basic-button(for="submit-button-backtrace") GO
           %li
             %span.sub-title Status Code
-            %form(action="/find" method="post")
-              %input.input-text(type="text" name="status_code" placeholder="placeholder")
-              %input(type="submit" value="GO" id="go-button")
-              %label(for="go-button") GO
+            %form(action="/search" method="post")
+              %input.basic-insert-text(type="text" name="status_code" placeholder="placeholder")
+              %input.type-submit(type="submit" value="GO" id="submit-button-status")
+              %label.basic-button(for="submit-button-status") GO
           %li
             %span.sub-title Timestamp
-            %form(action="/find" method="post")
-              %input.input-text(type="text" name="date_from" placeholder="DATE")
+            %form(action="/search" method="post")
+              %input.basic-insert-text(type="text" name="date_from" placeholder="DATE")
               %span.icon-arrow
-              %input.input-text(type="text" name="date_to" placeholder="DATE")
-              %input(type="submit" value="GO" id="go-button")
-              %label(for="go-button") GO
+              %input.basic-insert-text(type="text" name="date_to" placeholder="DATE")
+              %input.type-submit(type="submit" value="GO" id="submit-button-date")
+              %label.basic-button(for="submit-button-date") GO
       %div.inner
         - @result.logs.each do |log|
           %div
@@ -62,11 +73,16 @@
             %form.checkbox(action="/checked" method="post")              
               %label(for="entry-checkbox#{log.id}")
                 %span
-              %span                                  
+              %span
             %form.issue(action="/issue" method="post")
-              %input(type="text" name="title")
-              %input(type="text" name="body" value="#{log.entry}" class="hidden")
-              %input(type="text" name="id" value="#{log.id}" class="hidden")
-              %input.submit(type="submit" value="Post an Issue")
-        = paginate @result
+              %input.basic-insert-text(type="text" name="title" placeholder="Title here")
+              %input.basic-insert-text(type="text" name="body" value="#{log.entry}" class="hidden")
+              %input.basic-insert-text(type="text" name="id" value="#{log.id}" class="hidden")
+              %input.submit(type="submit" value="Post an Issue" id="post-issue")
+              %label.basic-button(for="post-issue") Issue on Github
+        %ul.pagination.clearfix
+          - 3.times do
+            %li
+              %a{:href => "#"} 1          
+        / = paginate @result
     
