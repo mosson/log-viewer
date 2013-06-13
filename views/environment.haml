@@ -16,8 +16,7 @@
 %div.main
   %div.inner.clearfix
     %nav.sidebar
-      / %ul{:class => "#{params[:environment]}"}
-      %ul
+      %ul{:class => "#{params[:environment]}"}
         %li.production
           %a{:href => "production"}
           %p.number-of-logs= Log.where(:environment => "production").count
