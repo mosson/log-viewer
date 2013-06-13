@@ -75,7 +75,9 @@
               %span
             %form.issue(action="/issue" method="post")
               %input.basic-insert-text(type="text" name="title" placeholder="Title here")
-              %input.basic-insert-text(type="text" name="body" value="#{log.entry}" class="hidden")
+              %input.basic-insert-text(type="hidden" name="body" value="#{escape_html(log.entry)}")
+              %pre= escape_html(log.entry)
+              %pre= "#{escape_html(log.entry)}"
               %input.basic-insert-text(type="text" name="id" value="#{log.id}" class="hidden")
               %input.submit(type="submit" value="Post an Issue" id="post-issue")
               %label.basic-button(for="post-issue") Issue on Github
