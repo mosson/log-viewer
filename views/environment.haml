@@ -25,6 +25,10 @@
           %p.number-of-logs= Log.where(:environment => "staging").count
     %article.content
       %nav.clearfix
+        - unless params[:status_code].nil?
+          %span= @logs.count
+          %span Logs Found!
+
         %ul.pagination.clearfix
           - 3.times do
             %li
@@ -44,19 +48,19 @@
         %ul.clearfix
           %li
             %span.sub-title Backtrace
-            %form(action="/search" method="post")
+            %form(action="/#{params[:environment]}" method="post")
               %input.basic-insert-text(type="text" name="backtrace" placeholder="placeholder")
               %input.type-submit(type="submit" value="GO" id="submit-button-backtrace")
               %label.basic-button(for="submit-button-backtrace") GO
           %li
             %span.sub-title Status Code
-            %form(action="/search" method="post")
+            %form(action="/#{params[:environment]}" method="post")
               %input.basic-insert-text(type="text" name="status_code" placeholder="placeholder")
               %input.type-submit(type="submit" value="GO" id="submit-button-status")
               %label.basic-button(for="submit-button-status") GO
           %li
             %span.sub-title Timestamp
-            %form(action="/search" method="post")
+            %form(action="/#{params[:environment]}" method="post")
               %input.basic-insert-text(type="text" name="date_from" placeholder="DATE")
               %span.icon-arrow
               %input.basic-insert-text(type="text" name="date_to" placeholder="DATE")
@@ -65,20 +69,19 @@
       %div.inner
         - @result.logs.each do |log|
           %div
-            %div.github-issued
-            %p.timestamp= log.timestamp
-            %pre.entry= log.entry
+            = (log.github_issued != nil) ? "<div class=\"github-issued\"></div>" : ""
+            %p.entry-title= log.entry.match(/Completed.*/)
+            %p.entry-timestamp= log.timestamp
             %input(type="checkbox" name="checkbox" id="entry-checkbox#{log.id}")
-            %form.checkbox(action="/checked" method="post")              
+            %pre.entry= (log.error_status == 500) ? log.entry.match(/Completed.*/m) : log.entry
+            %form.checkbox(action="/checked" method="post")
               %label(for="entry-checkbox#{log.id}")
                 %span
               %span
             %form.issue(action="/issue" method="post")
               %input.basic-insert-text(type="text" name="title" placeholder="Title here")
               %input.basic-insert-text(type="hidden" name="body" value="#{escape_html(log.entry)}")
-              %pre= escape_html(log.entry)
-              %pre= "#{escape_html(log.entry)}"
-              %input.basic-insert-text(type="text" name="id" value="#{log.id}" class="hidden")
+              %input.basic-insert-text(type="hidden" name="id" value="#{log.id}")
               %input.submit(type="submit" value="Post an Issue" id="post-issue")
               %label.basic-button(for="post-issue") Issue on Github
         %ul.pagination.clearfix
@@ -86,4 +89,3 @@
             %li
               %a{:href => "#"} 1          
         / = paginate @result
-    
