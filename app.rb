@@ -31,12 +31,18 @@ get '/style.css' do
 	css :stylesheet
 end
 
-post '/issue' do
-	# client = Octokit::Client.new login: ENV["GITHUB_USER"], password: ENV["GITHUB_PASSWORD"]
-	# api_response = client.create_issue TARGET_REPO, params[:title], params[:body] unless params[:title].nil? && params[:body].nil?	
+post '/issue' do	
+	redirect "/invalid" if params[:title].nil? || params[:body].nil?
+
+	client = Octokit::Client.new login: ENV["GITHUB_USER"], password: ENV["GITHUB_PASSWORD"]
+	api_response = client.create_issue TARGET_REPO, params[:title], params[:body] unless params[:title].nil? && params[:body].nil?	
 	Log.where(:id => params[:id]).first.update_attribute(:github_issued, true)
-	# redirect api_response.html_url
-	redirect "/production"
+	redirect api_response.html_url	
+	# redirect "/production"
+end
+
+get "/invalid" do
+	"Invalid argument"	
 end
 
 get "/:environment" do
