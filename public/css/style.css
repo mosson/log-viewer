@@ -202,10 +202,19 @@ article.content > .inner > div > pre.entry {
 	font-size: 83%;
 	padding: 10px;
 	line-height: 28px;
+	max-height: 19em;
+	overflow: hidden;
+	overflow-x: scroll;
 }
-article.content > .inner > div > p.timestamp {
-	margin: 0px 0px 15px;
+article.content > .inner > div > p.entry-title {
 	font-size: 100%;
+	line-height: 2;
+	color: #818181;
+	font-weight: bold;
+}
+article.content > .inner > div > p.entry-timestamp {
+	color: #a1a1a1;
+	margin-bottom: 10px;
 }
 
 
@@ -326,7 +335,7 @@ article.content > .inner > div > form.checkbox > span {
 article.content > .inner > div > input:checked ~ form.checkbox span {
 	background-position: 0 -128px;
 }
-article.content > .inner > div > input:checked + input {
+article.content > .inner > div > input:checked ~ input {
 	display: block;
 }
 article.content > .inner > div > input {
@@ -334,6 +343,9 @@ article.content > .inner > div > input {
 }
 article.content > .inner > div > input:checked ~ form.issue {
 	display: block;
+}
+article.content > .inner > div > input:checked ~ pre {
+	max-height: 1000px;
 }
 
 /* Form::issue */
