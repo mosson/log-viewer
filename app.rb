@@ -32,17 +32,11 @@ get '/style.css' do
 end
 
 post '/issue' do
-	# Log.where(:id => params[:id])
-	client = Octokit::Client.new login: ENV["GITHUB_USER"], password: ENV["GITHUB_PASSWORD"]
-	api_response = client.create_issue TARGET_REPO, params[:title], params[:body] unless params[:title].nil? && params[:body].nil?
-	redirect api_response.html_url
-end
-
-post "/search" do
-	@logs            = Log.limit(10)
-	@logs_total 		 = Log.where(:error_status => params[:error_status])
-	@result 				 = Struct::Result.new(@logs_total.count, @logs.count, @logs)
-	haml :environment
+	# client = Octokit::Client.new login: ENV["GITHUB_USER"], password: ENV["GITHUB_PASSWORD"]
+	# api_response = client.create_issue TARGET_REPO, params[:title], params[:body] unless params[:title].nil? && params[:body].nil?	
+	Log.where(:id => params[:id]).first.update_attribute(:github_issued, true)
+	# redirect api_response.html_url
+	redirect "/production"
 end
 
 get "/:environment" do
@@ -51,9 +45,26 @@ get "/:environment" do
 	# @logs            = Log.where()
 	# @logs_total 		 = Log.all
 	@result 				 = Struct::Result.new(@logs_total.count, @logs.count, @logs)
-	@title 					 = params[:environment]
-	haml :environment	
+	@title 					 = params[:environment]	
+	haml :environment
+	
+	# @logs = Log.where(:backtrace => params[:backtrace]) unless params[:backgrace.nil]?
+	# @logs = Log.where(:timestamp => params[:data_to]) unless params[:data_to.nil]?
 end
+
+post "/:environment" do
+	@logs            = Log.where(:error_status => params[:status_code])
+	@logs_total 		 = Log.where(:error_status => params[:status_code])
+	# @logs            = Log.where()
+	# @logs_total 		 = Log.all
+	@result 				 = Struct::Result.new(@logs_total.count, @logs.count, @logs)
+	@title 					 = params[:environment]	
+	haml :environment
+
+	# @logs 					 = Log.where(:status_code => params[:status_code])
+	# @logs_total 		 = Log.where(:status_code => params[:status_code])
+end
+
 
 get "/env/css/styles.css" do
 	css :stylesheet
