@@ -82,8 +82,8 @@
               %input.basic-insert-text(type="text" name="title" placeholder="Title here")
               %input.basic-insert-text(type="hidden" name="body" value="#{escape_html(log.entry)}")
               %input.basic-insert-text(type="hidden" name="id" value="#{log.id}")
-              %input.submit(type="submit" value="Post an Issue" id="post-issue")
-              %label.basic-button(for="post-issue") Issue on Github
+              %input.submit(type="submit" value="Post an Issue" id="post-issue#{log.id}")
+              %label.basic-button(for="post-issue#{log.id}") Issue on Github
         %ul.pagination.clearfix
           - 3.times do
             %li
