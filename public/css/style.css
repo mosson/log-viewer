@@ -303,6 +303,14 @@ input#pull-down-point:checked ~ .pull-down-navigation{
 	font-size: 91%;
 }
 
+
+ul.search-result {
+	margin-left: 13px;
+	margin-top: 13px;
+	zoom: 1;
+	float: left;
+}
+
 /* Form::Checkbox */
 article.content > .inner > div > form.checkbox {
 	position: absolute;

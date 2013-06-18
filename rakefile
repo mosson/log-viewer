@@ -3,3 +3,9 @@ namespace :hoge do
 		puts "foo"
 	end
 end
+
+namespace :migration do
+  task :seeds do    
+  end
+end
+
