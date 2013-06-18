@@ -9,18 +9,6 @@ require 'haml'
 
 TARGET_REPO = "a-munakata/log-factory"
 
-Struct.new("Result", :total, :size, :logs)
-
-class SinatraApp < Sinatra::Base
-	register Sinatra::Paginate
-
-	helpers do
-		def page
-			[params[:page].to_i - 1, 0].max
-		end
-	end
-end
-
 get "/" do
 	@logs = Log.all
 	@environments = ["production", "staging"]
@@ -35,7 +23,7 @@ post '/issue' do
 	redirect "/invalid" if params[:title].nil? || params[:body].nil?
 
 	client = Octokit::Client.new login: ENV["GITHUB_USER"], password: ENV["GITHUB_PASSWORD"]
-	api_response = client.create_issue TARGET_REPO, params[:title], params[:body] unless params[:title].nil? && params[:body].nil?	
+	api_response = client.create_issue TARGET_REPO, params[:title], params[:body] + params[:comment] unless params[:title].nil? && params[:body].nil?	
 	Log.where(:id => params[:id]).first.update_attribute(:github_issued, true)
 	redirect api_response.html_url	
 	# redirect "/production"
@@ -46,29 +34,21 @@ get "/invalid" do
 end
 
 get "/:environment" do
-	@logs            = Log.where(:environment => params[:environment])
-	@logs_total 		 = Log.where(:environment => params[:environment])
-	# @logs            = Log.where()
-	# @logs_total 		 = Log.all
-	@result 				 = Struct::Result.new(@logs_total.count, @logs.count, @logs)
-	@title 					 = params[:environment]	
+	@logs            = Log.where(:environment => params[:environment]).order(:timestamp => "DESC")
 	haml :environment
-	
-	# @logs = Log.where(:backtrace => params[:backtrace]) unless params[:backgrace.nil]?
-	# @logs = Log.where(:timestamp => params[:data_to]) unless params[:data_to.nil]?
 end
 
-post "/:environment" do
-	@logs            = Log.where(:error_status => params[:status_code])
-	@logs_total 		 = Log.where(:error_status => params[:status_code])
-	# @logs            = Log.where()
-	# @logs_total 		 = Log.all
-	@result 				 = Struct::Result.new(@logs_total.count, @logs.count, @logs)
-	@title 					 = params[:environment]	
-	haml :environment
 
-	# @logs 					 = Log.where(:status_code => params[:status_code])
-	# @logs_total 		 = Log.where(:status_code => params[:status_code])
+post "/:environment" do
+	@logs            = Log.where(:error_status => params[:status_code]).order(:timestamp => "DESC") unless params[:status_code].nil?
+			
+	haml :environment
+	# Log.all.each do |log|
+	# 	if log.entry.match(/Started/)
+	# 		@logs = log
+	# 	end
+	# end
+
 end
 
 
