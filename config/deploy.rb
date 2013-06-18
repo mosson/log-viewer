@@ -1,12 +1,12 @@
-set :application, "log-viewer"
-set :repository,  "git@github.com:a-munakata/log-viewer.git"
-set :branch, "munakata"
+set :application, ENV["APP_NAME"]
+set :repository,  ENV["APP_REPO"]
+set :branch, ENV["BRANCH_NAME"]
 
-role :web, "192.168.1.138"
-role :app, "192.168.1.138"
-role :db,  "192.168.1.138", :primary => true
+role :web, ENV["HOST_IP"]
+role :app, ENV["HOST_IP"]
+role :db,  ENV["HOST_IP"], :primary => true
 
-set :user, "fourdigit"
+set :user, ENV["HOST_USER"]
 
 set :rvm_ruby_string, '1.9.3'
 set :rvm_type, :user
