@@ -1,12 +1,5 @@
 require 'active_record'
-
-# if production?
-	# ActiveRecord::Base.establish_connection :adapter => "sqlite3", :database => "/var/www/rails/log-viewer/current/db/data.sqlite"
-# else
-	ActiveRecord::Base.establish_connection :adapter => "sqlite3", :database => "./db/data.sqlite"
-# end
-
-
+	ActiveRecord::Base.establish_connection :adapter => "sqlite3", :database => ENV["DB_PATH"]
 
 class Log < ActiveRecord::Base
 	default_scope {order(:timestamp)}
