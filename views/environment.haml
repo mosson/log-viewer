@@ -1,15 +1,6 @@
 %header
   %a.logo{:href => "/"}
     %span LOG TRACKER
-    - unless params[:environment].nil?
-      %span.location ::#{params[:environment].upcase}      
-    - else
-      - unless params[:status_code].nil?
-        %span.location ::Search::#{params[:status_code]}        
-      - unless params[:backtrace].nil?
-        %span.location ::Search::#{params[:backtrace]}
-      - unless params[:date_to].nil? && params[:data_from].nil?
-        %span.location ::Search::#{params[:date_from]}-#{params[:date_to]}
 
   %span.updated-date Last Updated At: 2013. 06. 12. 12:00:00
 
@@ -24,15 +15,16 @@
           %a{:href => "staging"}
           %p.number-of-logs= Log.where(:environment => "staging").count
     %article.content
-      %nav.clearfix
-        - unless params[:status_code].nil?
-          %span= @logs.count
-          %span Logs Found!
-
+      %nav.clearfix       
         %ul.pagination.clearfix
           - 3.times do
             %li
               %a{:href => "#"} 1          
+        - unless params[:status_code].nil?
+          %ul.search-result
+            %li
+              %span= @logs.count
+              %span Logs Found
         %ul.sub-navigation.clearfix        
           %li
             %a{:href => "#"} OPEN
@@ -46,28 +38,21 @@
       %div.pull-down-navigation
         %p SERACH CONDITION
         %ul.clearfix
-          %li
-            %span.sub-title Backtrace
-            %form{:action => "/#{params[:environment]}", :method => "post"}
-              %input.basic-insert-text{:type => "text", :name => "backtrace", :placeholder => "placeholder"}
-              %input.type-submit{:type => "submit", :value => "GO", :id => "submit-button-backtrace"}
-              %label.basic-button{:for => "submit-button-backtrace"} GO
-          %li
-            %span.sub-title Status Code
-            %form{:action => "/#{params[:environment]}", :method => "post"}
-              %input.basic-insert-text{:type => "text", :name => "status_code", :placeholder => "placeholder"}
-              %input.type-submit{:type => "submit", :value => "GO", :id => "submit-button-status"}
-              %label.basic-button{:for => "submit-button-status"} GO
-          %li
-            %span.sub-title Timestamp
-            %form{:action => "/#{params[:environment]}", :method => "post"}
-              %input.basic-insert-text{:type => "text", :name => "date_from", :placeholder => "DATE"}
-              %span.icon-arrow
-              %input.basic-insert-text{:type => "text", :name => "date_to", :placeholder => "DATE"}
-              %input.type-submit{:type => "submit", :value => "GO", :id => "submit-button-date"}
-              %label.basic-button{:for => "submit-button-date"} GO
+          - ["backtrace", "status_code", "timestamp"].each do |search_style|          
+            %li
+              %span.sub-title #{search_style}
+              %form{:action => "/#{params[:environment]}", :method => "post"}
+                - if search_style == "timestamp"
+                  %input.basic-insert-text{:type => "text", :name => "date_from", :placeholder => "DATE"}
+                  %span.icon-arrow
+                  %input.basic-insert-text{:type => "text", :name => "date_to", :placeholder => "DATE"}                  
+                - else
+                  %input.basic-insert-text{:type => "text", :name => "#{search_style}", :placeholder => "placeholder"}                
+                %input.type-submit{:type => "submit", :value => "GO", :id => "submit-button-#{search_style}"}
+                %label.basic-button{:for => "submit-button-#{search_style}"} GO
+
       %div.inner
-        - @result.logs.each do |log|
+        - @logs.each do |log|
           %div
             = (log.github_issued != nil) ? "<div class=\"github-issued\"></div>" : ""
             %p.entry-title= log.entry.match(/Completed.*/)
@@ -80,6 +65,7 @@
               %span
             %form.issue{:action => "/issue", :method => "post"}
               %input.basic-insert-text{:type => "text", :name => "title", :placeholder => "Title here"}
+              %input.basic-insert-text{:type => "textarea", :name => "comment", :placeholder => "Comment"}
               %input.basic-insert-text{:type => "hidden", :name => "body", :value => "#{escape_html(log.entry)}"}
               %input.basic-insert-text{:type => "hidden", :name => "id", :value => "#{log.id}"}
               %input.submit{:type => "submit", :value => "Post an Issue", :id => "post-issue#{log.id}"}
@@ -88,4 +74,4 @@
           - 3.times do
             %li
               %a{:href => "#"} 1          
-        / = paginate @result
+
