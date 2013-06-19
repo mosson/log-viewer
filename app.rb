@@ -41,13 +41,17 @@ end
 
 post "/:environment" do
 	@logs            = Log.where(:error_status => params[:status_code]).order(:timestamp => "DESC") unless params[:status_code].nil?
-			
+	
+		
+	Log.all.each do |log|
+		if log.entry.match(/#{params[:backtrace]}/)
+			@logs = log
+		end
+	end
+
 	haml :environment
-	# Log.all.each do |log|
-	# 	if log.entry.match(/Started/)
-	# 		@logs = log
-	# 	end
-	# end
+
+	
 
 end
 
