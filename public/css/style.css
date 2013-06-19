@@ -262,14 +262,14 @@ input#pull-down-point:checked ~ .pull-down-navigation{
 	border-right: 0;
 }
 .pull-down-navigation > ul > li:last-child .basic-insert-text {
-	width: 50px;
+	width: 70px;
 	margin-left: 17px;
 	color: #787878;
 }
 .pull-down-navigation .icon-arrow {
 	position: absolute;
 	top: 11px;
-	left: 65px;
+	left: 85px;
 	width: 7px;
 	height: 11px;
 	display: block;
@@ -432,4 +432,8 @@ ul.pagination > li a {
 	padding: 3px;
 	width: 120px;
 }
-
+textarea.basic-insert-text {
+	width: 30%;
+margin-right: 70%;
+margin-bottom: 10px;
+}
