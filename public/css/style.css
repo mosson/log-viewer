@@ -352,6 +352,7 @@ article.content > .inner > div > input {
 article.content > .inner > div > input:checked ~ form.issue {
 	display: block;
 }
+
 article.content > .inner > div > input:checked ~ pre {
 	max-height: 1000px;
 }
@@ -364,6 +365,18 @@ article.content > .inner > div > form.issue {
 article.content > .inner > div > form.issue input.submit{
 	display: none;
 }
+article.content > .inner > div > form.issue input:first-child {
+	width: 30%;
+	margin-right: 70%;
+	height: 15px;
+}
+article.content > .inner > div > form.issue input:nth-child(2){
+	width: 30%;
+	margin-right: 70%;
+	height: 40px;
+	margin-bottom: 10px;
+}
+
 
 /* Paginate */
 
