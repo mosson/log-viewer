@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/reloader' if development?
-require './lib/sinatra/paginate'
 require './log'
 require 'octokit'
 require 'yaml'
@@ -37,27 +36,23 @@ get "/invalid" do
 end
 
 get "/:environment" do
-	@logs            = Log.where(:environment => params[:environment]).order(:timestamp => "DESC")
+	@logs = Log.github
+	@logs            = Log.envs(params[:environment]).order(:timestamp => "DESC")
 	haml :environment
 end
-
 
 post "/:environment" do
 	@backtrace = params[:backtrace]
 	@environment = params[:environment]
-	@status_code = params[:status_code]
+	@status_code = params[:status_code]	
+	@date_from = params[:date_from]
+	@date_to = params[:date_to]
 
-	@logs = Log.where(:environment => @environment, :error_status => @status_code).order(:timestamp => "DESC") unless @status_code.nil?
-	
-
-	# Log.all.each do |log|
-	# 	if log.entry.match(/#{@backtrace}/)
-	# 		@logs = log unless @backtrace.nil?
-	# 	end
-	# end
+	@logs = Log.envs(@environment).where(:error_status => @status_code) unless @status_code.nil?	
+	@logs = Log.all.find(:entry => /#{@backtrace}/, :environment => @environment) unless @backtrace.nil?
+	@logs = Log.envs(@environment).where(:timestamp => @date_from.to_time..@date_to.to_time) unless @date_from.nil? && @date_to.nil?	
 
 	haml :environment
-
 end
 
 
