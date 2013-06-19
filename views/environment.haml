@@ -16,16 +16,13 @@
           %p.number-of-logs= Log.where(:environment => "staging").count
     %article.content
       %nav.clearfix       
-        %ul.pagination.clearfix
-          - 3.times do
-            %li
-              %a{:href => "#"} 1          
-        - unless params[:status_code].nil?
+        = haml :_paginate        
+        - unless params.nil?
           %ul.search-result
             %li
               %span= @logs.count
               %span Logs Found
-        %ul.sub-navigation.clearfix        
+        %ul.sub-navigation.clearfix
           %li
             %a{:href => "#"} OPEN
           %li
@@ -70,8 +67,5 @@
               %input.basic-insert-text{:type => "hidden", :name => "id", :value => "#{log.id}"}
               %input.submit{:type => "submit", :value => "Post an Issue", :id => "post-issue#{log.id}"}
               %label.basic-button{:for => "post-issue#{log.id}"} Issue on Github
-        %ul.pagination.clearfix
-          - 3.times do
-            %li
-              %a{:href => "#"} 1          
-
+        = haml :_paginate
+        
