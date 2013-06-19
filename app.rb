@@ -23,10 +23,13 @@ post '/issue' do
 	redirect "/invalid" if params[:title].nil? || params[:body].nil?
 
 	client = Octokit::Client.new login: ENV["GITHUB_USER"], password: ENV["GITHUB_PASSWORD"]
-	api_response = client.create_issue TARGET_REPO, params[:title], params[:body] + params[:comment] unless params[:title].nil? && params[:body].nil?	
+	
+	data = erb :issue_template
+
+	api_response = client.create_issue TARGET_REPO, params[:title], data unless params[:title].nil? && params[:body].nil?	
 	Log.where(:id => params[:id]).first.update_attribute(:github_issued, true)
 	redirect api_response.html_url	
-	# redirect "/production"
+	redirect "/production"
 end
 
 get "/invalid" do
@@ -40,18 +43,20 @@ end
 
 
 post "/:environment" do
-	@logs            = Log.where(:error_status => params[:status_code]).order(:timestamp => "DESC") unless params[:status_code].nil?
+	@backtrace = params[:backtrace]
+	@environment = params[:environment]
+	@status_code = params[:status_code]
+
+	@logs = Log.where(:environment => @environment, :error_status => @status_code).order(:timestamp => "DESC") unless @status_code.nil?
 	
-		
-	Log.all.each do |log|
-		if log.entry.match(/#{params[:backtrace]}/)
-			@logs = log
-		end
-	end
+
+	# Log.all.each do |log|
+	# 	if log.entry.match(/#{@backtrace}/)
+	# 		@logs = log unless @backtrace.nil?
+	# 	end
+	# end
 
 	haml :environment
-
-	
 
 end
 
