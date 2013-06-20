@@ -32,9 +32,17 @@ post '/issue' do
 
 	api_response = client.create_issue TARGET_REPO, params[:title], data unless params[:title].nil? && params[:body].nil?	
 	Log.where(:id => params[:id]).first.update_attribute(:github_issued, true)
-	redirect api_response.html_url	
-	redirect "/production"
+	
+	redirect api_response.html_url
 end
+
+post '/checked' do		
+	params[:checked_id].each do |id|
+		Log.where(:id => id).first.update_attribute(:closed, true)
+	end	
+	redirect "/#{params[:environment]}"
+end
+
 
 get '/:environment/:page' do
 	redirect "/production" if params[:page] == "production"
@@ -75,8 +83,6 @@ post '/:environment' do
 	@logs = Log.envs(@environment).where(:timestamp => @date_from.to_time..@date_to.to_time) unless @date_from.nil? && @date_to.nil?
 	haml :environment	
 end
-
-
 
 
 get '/style.css' do

@@ -49,25 +49,31 @@
                 %input.type-submit{:type => "submit", :value => "GO", :id => "submit-button-#{search_style}"}
                 %label.basic-button{:for => "submit-button-#{search_style}"} GO
 
-      %div.inner
-
-        - @logs.each do |log|
-          %div
-            = (log.github_issued != nil) ? "<div class=\"github-issued\"></div>" : ""
-            %p.entry-title= log.entry.match(/Completed.*/)
-            %p.entry-timestamp= log.timestamp
-            %input{:type => "checkbox", :name => "checkbox",  :id => "entry-checkbox#{log.id}"}
-            %pre.entry= (log.error_status == 500) ? log.entry.match(/Completed.*/m) : log.entry
-            %form.checkbox{:action => "/checked", :method => "post"}
-              %label{:for => "entry-checkbox#{log.id}"}
+      %form.checkbox{:action => "/checked", :method => "post"}
+        %div.inner
+          - @logs.each do |log|
+            %div.entry
+              = (log.github_issued != nil) ? "<div class=\"github-issued\"></div>" : ""
+              %p.entry-title= log.entry.match(/Completed.*/)
+              %p.entry-timestamp= log.timestamp
+                            
+              %input{:type => "checkbox", :name => "checked_id[]", :value => "#{log.id}", :id => "entry-checkbox#{log.id}"}
+              
+              %pre.entry= (log.error_status == 500) ? log.entry.match(/Completed.*/m) : log.entry
+              %div.checkbox_label
+                %label{:for => "entry-checkbox#{log.id}"}
+                  %span
                 %span
-              %span
-            %form.issue{:action => "/issue", :method => "post"}
-              %input.basic-insert-text{:type => "text", :name => "title", :placeholder => "Title here"}
-              %textarea.basic-insert-text.wide{:name => "comment", :placeholder => "Comment"}
-              %input.basic-insert-text{:type => "hidden", :name => "body", :value => "#{escape_html(log.entry)}"}
-              %input.basic-insert-text{:type => "hidden", :name => "id", :value => "#{log.id}"}
-              %input.submit{:type => "submit", :value => "Post an Issue", :id => "post-issue#{log.id}"}
-              %label.basic-button{:for => "post-issue#{log.id}"} Issue on Github
-        = haml :_paginate
+              %form.issue{:action => "/issue", :method => "post"}
+                %input.basic-insert-text{:type => "text", :name => "title", :placeholder => "Title here"}
+                %textarea.basic-insert-text.wide{:name => "comment", :placeholder => "Comment"}
+                %input.basic-insert-text{:type => "hidden", :name => "body", :value => "#{escape_html(log.entry)}"}
+                %input.basic-insert-text{:type => "hidden", :name => "id", :value => "#{log.id}"}
+                %input.submit{:type => "submit", :value => "Post an Issue", :id => "post-issue#{log.id}"}
+                %label.basic-button{:for => "post-issue#{log.id}"} Issue on Github
+      
+          
+          %input.submit{:type => "submit", :value => "Close Checked Logs", :id => "close-issue"}
+          %label.basic-button{:for => "close-issue"} Close Checked Logs
+      = haml :_paginate
         
