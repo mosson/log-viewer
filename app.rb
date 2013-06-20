@@ -20,7 +20,10 @@ get '/style.css' do
 end
 
 post '/issue' do	
-	redirect "/invalid" if params[:title].nil? || params[:body].nil?
+	if params[:title].nil? || params[:body].nil?
+		$invalid = "Empty Value was found."
+		redirect "/invalid"
+	end
 
 	client = Octokit::Client.new login: ENV["GITHUB_USER"], password: ENV["GITHUB_PASSWORD"]
 	
@@ -32,8 +35,8 @@ post '/issue' do
 	redirect "/production"
 end
 
-get '/invalid' do
-	"Invalid argument"	
+get '/invalid' do	
+	haml :invalid
 end
 
 get '/:environment/:page' do
@@ -62,6 +65,8 @@ get '/:environment' do
 end
 
 post '/:environment' do
+
+	# redirect "/invalid" unless @date_from.to_time.instance_of? (Time) &&  @date_to.ti_time.instance_of? (Time)
 	@backtrace = params[:backtrace]
 	@environment = params[:environment]
 	@status_code = params[:status_code]	
@@ -69,10 +74,9 @@ post '/:environment' do
 	@date_to = params[:date_to]
 
 	@logs = Log.envs(@environment).where(:error_status => @status_code) unless @status_code.nil?
-	@logs = Log.envs(@environment).where('entry LIKE ?', '%#{@backtrace}%') unless @backtrace.nil?
+	@logs = Log.envs(@environment).where("entry LIKE ?", "%#{@backtrace}%") unless @backtrace.nil?
 	@logs = Log.envs(@environment).where(:timestamp => @date_from.to_time..@date_to.to_time) unless @date_from.nil? && @date_to.nil?
-
-	haml :environment
+	haml :environment	
 end
 
 
