@@ -11,7 +11,7 @@ class LogStore < ActiveRecord::Migration
 			t.boolean		:closed
 		end
 
-		# add_index :logs, [:timestamp, :environment, :error_status], unique: true
+		add_index :logs, [:timestamp, :environment, :error_status], unique: true
 		
 	end
 end
