@@ -1,9 +1,3 @@
-%header
-  %a.logo{:href => "/"}
-    %span LOG TRACKER
-
-  %span.updated-date Last Updated At: 2013. 06. 12. 12:00:00
-
 %div.main
   %div.inner.clearfix
     %nav.sidebar
@@ -14,9 +8,12 @@
         %li.staging
           %a{:href => "staging"}
           %p.number-of-logs= Log.where(:environment => "staging").count
+
     %article.content
-      %nav.clearfix       
-        = haml :_paginate        
+      %nav.clearfix
+
+        = haml :_paginate
+
         - unless params.nil?
           %ul.search-result
             %li
@@ -31,24 +28,29 @@
             %label(for="pull-down-point")
               %span
                 %span
+
       %input{:type => "checkbox", :id => "pull-down-point"}
       %div.pull-down-navigation
         %p SERACH CONDITION
         %ul.clearfix
+
           - ["backtrace", "status_code", "timestamp"].each do |search_style|          
             %li
               %span.sub-title #{search_style}
               %form{:action => "/#{params[:environment]}", :method => "post"}
+
                 - if search_style == "timestamp"
                   %input.basic-insert-text{:type => "text", :name => "date_from", :placeholder => "DATE"}
                   %span.icon-arrow
-                  %input.basic-insert-text{:type => "text", :name => "date_to", :placeholder => "DATE"}                  
+                  %input.basic-insert-text{:type => "text", :name => "date_to", :placeholder => "DATE"}    
+
                 - else
                   %input.basic-insert-text{:type => "text", :name => "#{search_style}", :placeholder => "placeholder"}                
                 %input.type-submit{:type => "submit", :value => "GO", :id => "submit-button-#{search_style}"}
                 %label.basic-button{:for => "submit-button-#{search_style}"} GO
 
       %div.inner
+
         - @logs.each do |log|
           %div
             = (log.github_issued != nil) ? "<div class=\"github-issued\"></div>" : ""

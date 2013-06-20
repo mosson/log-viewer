@@ -9,10 +9,6 @@
 
 li { list-style: none; }
 .hidden { display: none; }
-/*
-.font-color-light-gray  {
-	color: #a1a1a1;
-}*/
 
 label {
 	cursor: pointer;
