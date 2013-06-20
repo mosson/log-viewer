@@ -1,11 +1,13 @@
-namespace :hoge do
-	task :huga do
-		puts "foo"
+require './app'
+
+namespace :db do
+  task :migrate do
+  	puts "migrating..."
+  	`ruby db/migrate/migration.rb`
+	end
+
+	task :seeds do
+		puts "inserting seeds..."
+		`ruby db/seeds.rb`
 	end
 end
-
-namespace :migration do
-  task :seeds do    
-  end
-end
-
