@@ -90,10 +90,12 @@ post '/:environment' do
 	@logs = Log.envs(@environment).where(:closed => true) unless @closed.nil?
 	@logs = Log.envs(@environment).where(:closed => nil) unless @open.nil?
 	
-	# params[:checked_id].each do |id|
-	# 	Log.where(:id => id).first.update_attribute(:closed, true)
-	# end
-
+	unless params[:checked_id].nil?
+		params[:checked_id].each do |id|
+			Log.where(:id => id).first.update_attribute(:closed, true)
+			@logs = Log.envs(@environment).where(:closed => true)
+		end
+	end
 	
 
 	haml :environment	
