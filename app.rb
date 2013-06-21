@@ -83,7 +83,8 @@ post '/:environment' do
 
 	@logs = Log.envs(@environment).where(:error_status => @status_code) unless @status_code.nil?
 	@logs = Log.envs(@environment).where("entry LIKE ?", "%#{@backtrace}%") unless @backtrace.nil?
-	@logs = Log.envs(@environment).where(:timestamp => @date_from.to_time..@date_to.to_time) unless @date_from.nil? && @date_to.nil?
+	@logs = Log.envs(@environment).where(:timestamp => @date_from.to_time) unless @date_from.nil? && defined?(@date_to)		
+	@logs = Log.envs(@environment).where(:timestamp => @date_from.to_time..@date_to.to_time) unless @date_from.nil? && @date_to.nil?	
 	haml :environment	
 end
 

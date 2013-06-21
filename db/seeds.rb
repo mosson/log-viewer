@@ -1,9 +1,25 @@
 require './app'
+require 'erb'
+dirname = "./db/data"
 
-Dir::entries("./db/data/").each do |file|
-	# fname = File.open("./db/data/#{file}")
-	# print fname.read
-	# File.close
-	# puts file
-	require "./db/data/production-20130606"
+Dir::entries(dirname).each do |file|	
+	if file.match(/erb/)
+		
+		fname = Dir::pwd + "/db/data/" + file
+		puts "inserting #{file} into database..."
+
+		begin
+			erb = ERB.new(File.read(fname)).result(binding)
+			erb.filename = fnameputs erb.filename
+		rescue => e			
+			puts "ERROR::error at #{fname}"
+			puts e
+		end
+		
+		
+	end
+	
 end
+
+
+
