@@ -8,6 +8,6 @@ namespace :db do
 
 	task :seeds do
 		puts "inserting seeds..."
-    `ruby ./db/seeds.rb`
+		`ruby db/seeds.rb`
 	end
 end
