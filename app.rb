@@ -1,13 +1,3 @@
-require 'sinatra'
-require 'sinatra/base'
-require 'sinatra/reloader' if development?
-require 'sinatra/content_for'
-require './log'
-require 'octokit'
-require 'yaml'
-require 'haml'
-require './lib/paginate'
-
 TARGET_REPO = "a-munakata/log-factory"
 
 get "/" do
@@ -16,10 +6,12 @@ get "/" do
 	haml :index
 end
 
-get '/invalid' do	
+not_found do
+  erb :not_found_error
+end
+error do	
 	haml :invalid
 end
-
 
 post '/issue' do	
 	if params[:title].nil? || params[:body].nil?
