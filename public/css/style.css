@@ -456,3 +456,13 @@ textarea.basic-insert-text {
 	margin-top: 13px;
 	margin-right: 13px;
 }
+
+/* Invalid Page */
+div.invalid-content {	
+	padding: 20px;
+	margin-top: 10px;
+	background: #fafafa;
+}
+h1 {
+	font-size: 180%!important;
+}

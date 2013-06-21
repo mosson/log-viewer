@@ -66,7 +66,7 @@
               %p.entry-title= log.entry.match(/Completed.*/)
               %p.entry-timestamp= log.timestamp
                             
-              %input{:type => "checkbox", :name => "checked_id[]", :value => "#{log.id}", :id => "entry-checkbox#{log.id}", :class => "hidden"}
+              %input{:type => "checkbox", :name => "checked_id[]", :value => "#{log.id}", :id => "entry-checkbox#{log.id}", :class => "hidden"}              
               
               %pre.entry= (log.error_status == 500) ? log.entry.match(/Completed.*/m) : log.entry
               %div.checkbox_label
@@ -84,6 +84,7 @@
           
           %ul.check-buttons
             %li
+              %input{:type => "hidden", :name => "if_checked"}
               %input.submit{:type => "submit", :value => "Close Checked Logs", :id => "close-issue", :class => "hidden"}
               %label.large-button{:for => "close-issue"} Close
       = haml :_paginate        

@@ -37,16 +37,6 @@ post '/issue' do
 	redirect api_response.html_url
 end
 
-# post '/close' do		
-	
-# 	redirect "/close"
-# end
-
-get '/close' do
-	@logs    = Log.where(:closed => true)
-	haml :environment
-end
-
 get '/:environment/:page' do
 	redirect "/production" if params[:page] == "production"
 	redirect "/staging" if params[:page] == "staging"
@@ -95,6 +85,9 @@ post '/:environment' do
 			Log.where(:id => id).first.update_attribute(:closed, true)
 			@logs = Log.envs(@environment).where(:closed => true)
 		end
+	elsif
+		$invalid = "No Logs were checked."
+		redirect "/invalid"		
 	end
 	
 
@@ -102,6 +95,9 @@ post '/:environment' do
 end
 
 
+get '*/styles.css' do
+	css :stylesheet
+end
 get '/style.css' do
 	css :stylesheet
 end
@@ -109,3 +105,4 @@ end
 get '/env/css/styles.css' do
 	css :stylesheet
 end
+
