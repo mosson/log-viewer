@@ -23,13 +23,13 @@
           %li
             %a{:href => "#"} OPEN
           %li
-            %a{:href => "#"} CLOSED
+            %a{:href => "/close"} CLOSED
           %li                   
             %label(for="pull-down-point")
               %span
                 %span
 
-      %input{:type => "checkbox", :id => "pull-down-point"}
+      %input{:type => "checkbox", :id => "pull-down-point", :class => "hidden"}
       %div.pull-down-navigation
         %p SERACH CONDITION
         %ul.clearfix
@@ -46,10 +46,10 @@
 
                 - else
                   %input.basic-insert-text{:type => "text", :name => "#{search_style}", :placeholder => "placeholder"}                
-                %input.type-submit{:type => "submit", :value => "GO", :id => "submit-button-#{search_style}"}
+                %input.type-submit{:type => "submit", :value => "GO", :id => "submit-button-#{search_style}", :class => "hidden"}
                 %label.basic-button{:for => "submit-button-#{search_style}"} GO
 
-      %form.checkbox{:action => "/checked", :method => "post"}
+      %form.checkbox{:action => "/close", :method => "post"}
         %div.inner
           - @logs.each do |log|
             %div.entry
@@ -57,7 +57,7 @@
               %p.entry-title= log.entry.match(/Completed.*/)
               %p.entry-timestamp= log.timestamp
                             
-              %input{:type => "checkbox", :name => "checked_id[]", :value => "#{log.id}", :id => "entry-checkbox#{log.id}"}
+              %input{:type => "checkbox", :name => "checked_id[]", :value => "#{log.id}", :id => "entry-checkbox#{log.id}", :class => "hidden"}
               
               %pre.entry= (log.error_status == 500) ? log.entry.match(/Completed.*/m) : log.entry
               %div.checkbox_label
@@ -69,11 +69,13 @@
                 %textarea.basic-insert-text.wide{:name => "comment", :placeholder => "Comment"}
                 %input.basic-insert-text{:type => "hidden", :name => "body", :value => "#{escape_html(log.entry)}"}
                 %input.basic-insert-text{:type => "hidden", :name => "id", :value => "#{log.id}"}
-                %input.submit{:type => "submit", :value => "Post an Issue", :id => "post-issue#{log.id}"}
+                %input.submit{:type => "submit", :value => "Post an Issue", :id => "post-issue#{log.id}", :class => "hidden"}
                 %label.basic-button{:for => "post-issue#{log.id}"} Issue on Github
       
           
-          %input.submit{:type => "submit", :value => "Close Checked Logs", :id => "close-issue"}
-          %label.basic-button{:for => "close-issue"} Close Checked Logs
+          %ul.check-buttons
+            %li
+              %input.submit{:type => "submit", :value => "Close Checked Logs", :id => "close-issue", :class => "hidden"}
+              %label.large-button{:for => "close-issue"} Close
       = haml :_paginate
         

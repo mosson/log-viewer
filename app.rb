@@ -36,13 +36,17 @@ post '/issue' do
 	redirect api_response.html_url
 end
 
-post '/checked' do		
+post '/close' do		
 	params[:checked_id].each do |id|
 		Log.where(:id => id).first.update_attribute(:closed, true)
 	end	
-	redirect "/#{params[:environment]}"
+	redirect "/close"
 end
 
+get '/close' do
+	@logs    = Log.where(:closed => true)
+	haml :environment
+end
 
 get '/:environment/:page' do
 	redirect "/production" if params[:page] == "production"
@@ -56,7 +60,6 @@ get '/:environment/:page' do
 	
 	haml :environment
 end
-
 
 get '/:environment' do
 	@logs    = Log.envs(params[:environment]).limit(10).offset(10 * (params[:page].to_i - 1))
