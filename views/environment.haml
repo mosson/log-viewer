@@ -1,3 +1,10 @@
+%form{:action => "/#{params[:environment]}", :method => "post"}  
+  %input{:type => "hidden", :value => "closed", :name => "closed"}
+  %input{:type => "submit", :value => "CLOSED", :id => "closed_button", :class => "hidden"}
+%form{:action => "/#{params[:environment]}", :method => "post"}  
+  %input{:type => "hidden", :value => "open", :name => "open"}
+  %input{:type => "submit", :value => "OPEN", :id => "open_button", :class => "hidden"}  
+
 %div.main
   %div.inner.clearfix
     %nav.sidebar
@@ -21,11 +28,13 @@
               %span Logs Found
         %ul.sub-navigation.clearfix
           %li
-            %a{:href => "#"} OPEN
+            %label{:for => "open_button"}
+              %span.label OPEN
           %li
-            %a{:href => "/close"} CLOSED
+            %label{:for => "closed_button"}
+              %span.label CLOSED
           %li                   
-            %label(for="pull-down-point")
+            %label{:for => "pull-down-point"}
               %span
                 %span
 
@@ -49,7 +58,7 @@
                 %input.type-submit{:type => "submit", :value => "GO", :id => "submit-button-#{search_style}", :class => "hidden"}
                 %label.basic-button{:for => "submit-button-#{search_style}"} GO
 
-      %form.checkbox{:action => "/close", :method => "post"}
+      %form.checkbox{:action => "/#{params[:environment]}", :method => "post"}
         %div.inner
           - @logs.each do |log|
             %div.entry

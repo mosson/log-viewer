@@ -37,12 +37,10 @@ post '/issue' do
 	redirect api_response.html_url
 end
 
-post '/close' do		
-	params[:checked_id].each do |id|
-		Log.where(:id => id).first.update_attribute(:closed, true)
-	end	
-	redirect "/close"
-end
+# post '/close' do		
+	
+# 	redirect "/close"
+# end
 
 get '/close' do
 	@logs    = Log.where(:closed => true)
@@ -81,11 +79,23 @@ post '/:environment' do
 	@status_code = params[:status_code]	
 	@date_from   = params[:date_from]
 	@date_to     = params[:date_to]
+	@closed      = params[:closed]
+	@open      	 = params[:open]
 
-	@logs = Log.envs(@environment).where(:error_status => @status_code) unless @status_code.nil?
 	@logs = Log.envs(@environment).where("entry LIKE ?", "%#{@backtrace}%") unless @backtrace.nil?
+	@logs = Log.envs(@environment).where(:error_status => @status_code) unless @status_code.nil?	
 	@logs = Log.envs(@environment).where(:timestamp => @date_from.to_time) unless @date_from.nil? && defined?(@date_to)		
 	@logs = Log.envs(@environment).where(:timestamp => @date_from.to_time..@date_to.to_time) unless @date_from.nil? && @date_to.nil?	
+	
+	@logs = Log.envs(@environment).where(:closed => true) unless @closed.nil?
+	@logs = Log.envs(@environment).where(:closed => nil) unless @open.nil?
+	
+	# params[:checked_id].each do |id|
+	# 	Log.where(:id => id).first.update_attribute(:closed, true)
+	# end
+
+	
+
 	haml :environment	
 end
 
