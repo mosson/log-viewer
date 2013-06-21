@@ -16,12 +16,10 @@ get "/" do
 	haml :index
 end
 
-not_found do
-  erb :not_found_error
-end
-error do	
+get '/invalid' do	
 	haml :invalid
 end
+
 
 post '/issue' do	
 	if params[:title].nil? || params[:body].nil?
