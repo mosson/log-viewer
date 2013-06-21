@@ -1,12 +1,15 @@
 !!!
-%html
-  %head    
-    %title Log Tracker
+- content_for :title do
+  Log Tracker #{params[:environment]}
+%html  
+  %head
+    / %title= yield :title
+    %title= content_for?(:title) ? yield(:title) : "Log Tracker"
     %link{ :rel => "stylesheet", :href =>"../css/style.css" }
     %link{ :rel => "stylesheet", :href =>"http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css" }
   %body
     %header
       %a.logo{:href => "/"}
         %span LOG TRACKER
-      %span.updated-date Last Updated At: 2013. 06. 12. 12:00:00      
-    != yield
+      %span.updated-date Last Updated At: 2013. 06. 12. 12:00:00  
+    = yield
