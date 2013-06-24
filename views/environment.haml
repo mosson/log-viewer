@@ -1,8 +1,8 @@
 %form{:action => "/#{params[:environment]}", :method => "post"}  
-  %input{:type => "hidden", :value => "closed", :name => "closed"}
+  %input{:type => "hidden", :value => "true", :name => "closed"}
   %input{:type => "submit", :value => "CLOSED", :id => "closed_button", :class => "hidden"}
 %form{:action => "/#{params[:environment]}", :method => "post"}  
-  %input{:type => "hidden", :value => "open", :name => "open"}
+  %input{:type => "hidden", :value => "true", :name => "open"}
   %input{:type => "submit", :value => "OPEN", :id => "open_button", :class => "hidden"}  
 
 %div.main
@@ -11,10 +11,10 @@
       %ul{:class => "#{params[:environment]}"}
         %li.production
           %a{:href => "production"}
-          %p.number-of-logs= Log.where(:environment => "production").count
+          %p.number-of-logs= Log.where(:environment => "production", :closed => false).count
         %li.staging
           %a{:href => "staging"}
-          %p.number-of-logs= Log.where(:environment => "staging").count
+          %p.number-of-logs= Log.where(:environment => "staging", :closed => false).count
 
     %article.content
       %nav.clearfix
@@ -62,11 +62,12 @@
         %div.inner
           - @logs.each do |log|
             %div.entry
-              = (log.github_issued != nil) ? "<div class=\"github-issued\"></div>" : ""
+              = (log.github_issued != false) ? "<div class=\"github-issued\"></div>" : ""
               %p.entry-title= log.entry.match(/Completed.*/)
               %p.entry-timestamp= log.timestamp
                             
-              %input{:type => "checkbox", :name => "checked_id[]", :value => "#{log.id}", :id => "entry-checkbox#{log.id}", :class => "hidden"}              
+              %input{:type => "checkbox", :name => "checked_id[]", :value => "#{log.id}", :id => "entry-checkbox#{log.id}", :class => "hidden"}
+              %input{:type => "hidden", :name => "checked?", :value => "true"}
               
               %pre.entry= (log.error_status == 500) ? log.entry.match(/Completed.*/m) : log.entry
               %div.checkbox_label
