@@ -29,9 +29,9 @@ post '/issue' do
 
 	client = Octokit::Client.new login: ENV["GITHUB_USER"], password: ENV["GITHUB_PASSWORD"]
 	
-	data   = erb :issue_template
-
-	api_response = client.create_issue TARGET_REPO, params[:title], data unless params[:title].nil? && params[:body].nil?	
+	data   = erb :issue_template	
+	formated_data = CGI.unescapeHTML(data)
+	api_response = client.create_issue TARGET_REPO, params[:title], formated_data unless params[:title].nil? && params[:body].nil?	
 	Log.where(:id => params[:id]).first.update_attribute(:github_issued, true)
 	
 	redirect api_response.html_url
@@ -93,10 +93,10 @@ post '/:environment' do
 		@logs = @log_env.where(:closed => false)
 	end
 
-	if params[:checked_id].nil? && params[:checked?] == "true"
-		$invalid = "No Logs were checked."
-		redirect "/invalid"
-	end		
+	# if params[:checked_id].nil? && params[:checked?] == "true"
+	# 	$invalid = "No Logs were checked."
+	# 	redirect "/invalid"
+	# end		
 
 	haml :environment	
 end

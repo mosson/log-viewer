@@ -77,7 +77,7 @@
               %form.issue{:action => "/issue", :method => "post"}
                 %input.basic-insert-text{:type => "text", :name => "title", :placeholder => "Title here"}
                 %textarea.basic-insert-text.wide{:name => "comment", :placeholder => "Comment"}
-                %input.basic-insert-text{:type => "hidden", :name => "body", :value => "#{escape_html(log.entry)}"}
+                %input.basic-insert-text{:type => "hidden", :name => "body", :value => "#{CGI.unescapeHTML(log.entry)}"}
                 %input.basic-insert-text{:type => "hidden", :name => "id", :value => "#{log.id}"}
                 %input.submit{:type => "submit", :value => "Post an Issue", :id => "post-issue#{log.id}", :class => "hidden"}
                 %label.basic-button{:for => "post-issue#{log.id}"} Issue on Github
