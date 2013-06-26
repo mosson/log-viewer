@@ -1,0 +1,96 @@
+%form{:action => "/#{params[:environment]}", :method => "post"}  
+  %input{:type => "hidden", :value => "true", :name => "closed"}
+  %input{:type => "submit", :value => "CLOSED", :id => "closed_button", :class => "hidden"}
+%form{:action => "/#{params[:environment]}", :method => "post"}  
+  %input{:type => "hidden", :value => "true", :name => "open"}
+  %input{:type => "submit", :value => "OPEN", :id => "open_button", :class => "hidden"}  
+
+%div.main
+  %div.inner.clearfix
+    %nav.sidebar
+      %ul{:class => "#{params[:environment]}"}
+        %li.production
+          %a{:href => "production"}
+          %p.number-of-logs= Log.where(:environment => "production", :closed => false).count
+        %li.staging
+          %a{:href => "staging"}
+          %p.number-of-logs= Log.where(:environment => "staging", :closed => false).count
+
+    %article.content
+      %nav.clearfix
+
+        = haml :_paginate
+
+        - unless params.nil?
+          %ul.search-result
+            %li
+              %span= @logs.count
+              %span Logs Found
+        %ul.sub-navigation.clearfix
+          %li
+            %label{:for => "open_button"}
+              %span.label OPEN
+          %li
+            %label{:for => "closed_button"}
+              %span.label CLOSED
+          %li                   
+            %label{:for => "pull-down-point"}
+              %span
+                %span
+
+      %input{:type => "checkbox", :id => "pull-down-point", :class => "hidden"}
+      %div.pull-down-navigation
+        %p SERACH CONDITION
+        %ul.clearfix
+
+          - ["backtrace", "status_code", "ip_address", "timestamp"].each do |search_style|          
+            %li
+              %span.sub-title #{search_style.upcase.sub("_", " ")}
+              %form{:action => "/#{params[:environment]}", :method => "post"}
+
+                - if search_style == "timestamp"
+                  %input.basic-insert-text{:type => "text", :name => "date_from", :placeholder => "DATE"}
+                  %span.icon-arrow
+                  %input.basic-insert-text{:type => "text", :name => "date_to", :placeholder => "DATE"}    
+
+                - else
+                  %input.basic-insert-text{:type => "text", :name => "#{search_style}", :placeholder => "placeholder"}                
+                %input.type-submit{:type => "submit", :value => "GO", :id => "submit-button-#{search_style}", :class => "hidden"}
+                %label.basic-button{:for => "submit-button-#{search_style}"} GO
+
+      %form.checkbox{:action => "/#{params[:environment]}", :method => "post"}
+        %div.inner
+          - @logs.each do |log|
+            %div.entry
+              = (log.github_issued != false) ? "<div class=\"github-issued\"></div>" : ""
+              %p.entry-title= log.entry.match(/Completed.*/)
+              %p.entry-timestamp= log.timestamp
+                            
+              %input{:type => "checkbox", :name => "checked_id[]", :value => "#{log.id}", :id => "entry-checkbox#{log.id}", :class => "hidden"}
+              %input{:type => "hidden", :name => "checked?", :value => "true"}
+              
+              - if log.error_status == 500
+                %pre.entry.hidden= log.entry
+                %pre.entry.part= log.entry.match(/Completed.*/m)
+              - else
+                %pre.entry= log.entry
+              %div.checkbox_label
+                %label{:for => "entry-checkbox#{log.id}"}
+                  %span
+                %span
+              %form.issue{:action => "/issue", :method => "post"}
+                %input.basic-insert-text{:type => "text", :name => "title", :placeholder => "Title here"}
+                %textarea.basic-insert-text.wide{:name => "comment", :placeholder => "Comment"}
+                %input.basic-insert-text{:type => "hidden", :name => "body", :value => "#{CGI.unescapeHTML(log.entry)}"}
+                %input.basic-insert-text{:type => "hidden", :name => "id", :value => "#{log.id}"}
+                %input.submit{:type => "submit", :value => "Post an Issue", :id => "post-issue#{log.id}", :class => "hidden"}
+                %label.basic-button{:for => "post-issue#{log.id}"} Issue on Github
+      
+          
+          %ul.check-buttons
+            %li
+              %input{:type => "hidden", :name => "if_checked"}
+              %input.submit{:type => "submit", :value => "Close Checked Logs", :id => "close-issue", :class => "hidden"}
+              %label.large-button{:for => "close-issue"} Close
+      = haml :_paginate        
+= haml :_content_for
