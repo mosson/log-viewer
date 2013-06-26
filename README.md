@@ -34,3 +34,11 @@ Environment valiables
 - HOST_IP
 - HOST_USER
 
+## Development
+Migration
+
+`rake db:migrate`
+
+Insert seeds data to database
+
+`rake db:seeds`

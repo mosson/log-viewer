@@ -23,10 +23,10 @@ dir.each do |file|
 	end
 end
 
-data.each do |log|
+data.each do |log|	
 	begin
-		logs = Log.new(log) unless log.nil?
-		logs.save
+		logs = Log.new(log) unless log[:entry].nil?
+		logs.save unless logs.nil?
 	rescue ActiveRecord::RecordNotUnique => e
 		puts e	
 	end	
