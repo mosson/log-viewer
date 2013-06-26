@@ -7,8 +7,6 @@ gem 'sinatra'
 
 gem 'activerecord'
 
-gem 'sinatra-paginate'
-
 gem 'sinatra-contrib'
 
 gem 'octokit'
@@ -35,3 +33,4 @@ Environment valiables
 - BRANCH_PATH
 - HOST_IP
 - HOST_USER
+
