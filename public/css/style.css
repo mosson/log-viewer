@@ -363,6 +363,10 @@ article.content .inner > div.entry > input:checked ~ form.issue {
 
 article.content .inner > div.entry > input:checked ~ pre {
 	max-height: 1000px;
+	display: block;
+}
+article.content .inner > div.entry > input:checked ~ pre.entry.part {
+	display:none;
 }
 
 /* Form::issue */

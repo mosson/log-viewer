@@ -43,7 +43,7 @@
         %p SERACH CONDITION
         %ul.clearfix
 
-          - ["backtrace", "status_code", "timestamp"].each do |search_style|          
+          - ["backtrace", "status_code", "ip_address", "timestamp"].each do |search_style|          
             %li
               %span.sub-title #{search_style}
               %form{:action => "/#{params[:environment]}", :method => "post"}
@@ -69,7 +69,11 @@
               %input{:type => "checkbox", :name => "checked_id[]", :value => "#{log.id}", :id => "entry-checkbox#{log.id}", :class => "hidden"}
               %input{:type => "hidden", :name => "checked?", :value => "true"}
               
-              %pre.entry= (log.error_status == 500) ? log.entry.match(/Completed.*/m) : log.entry
+              - if log.error_status == 500
+                %pre.entry.hidden= log.entry
+                %pre.entry.part= log.entry.match(/Completed.*/m)
+              - else
+                %pre.entry= log.entry
               %div.checkbox_label
                 %label{:for => "entry-checkbox#{log.id}"}
                   %span

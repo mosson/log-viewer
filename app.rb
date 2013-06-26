@@ -72,11 +72,13 @@ post '/:environment' do
 	@date_to     = params[:date_to]
 	@closed      = params[:closed]
 	@open      	 = params[:open]
+	@ip_address	 = params[:ip_address]
 	@log_env		 = Log.where(:environment => @environment)
 
 	@logs = @log_env.where("entry LIKE ?", "%#{@backtrace}%") unless @backtrace.nil?
 	@logs = @log_env.where(:error_status => @status_code) unless @status_code.nil?
-	@logs = @log_env.where(:timestamp => @date_from.to_time..@date_to.to_time) unless @date_from.nil? && @date_to.nil?		
+	@logs = @log_env.where(:ip_address => @ip_address) unless @ip_address.nil?
+	@logs = @log_env.where(:timestamp => @date_from.to_time..@date_to.to_time) unless @date_from.nil? && @date_to.nil?
 	@logs = @log_env.where(:closed => true) unless @closed.nil?
 	@logs = @log_env.where(:closed => nil) unless @open.nil?
 	
