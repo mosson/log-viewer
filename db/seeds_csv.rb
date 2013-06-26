@@ -17,7 +17,8 @@ dir.each do |file|
 				:error_status => entry[3],
 				:github_issued => entry[4],
 				:closed => entry[5],
-				:updated => Time.now
+				:updated => Time.now,
+				:ip_address => entry[6]
 			}
 		}
 	end
