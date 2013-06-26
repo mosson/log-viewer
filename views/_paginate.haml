@@ -1,0 +1,12 @@
+- unless @result.nil?
+  %ul.pagination.clearfix
+    - if @result[:from] > 0
+      %li
+        %a{:href => "/#{params[:environment]}/1"} |<
+    - for i in @result[:from]..@result[:to] -1 do    
+      %li
+        %a{:href => "/#{params[:environment]}/#{params[:page] = i + 1}"} #{i+1}
+  
+    - if @result[:to] < @max_num
+      %li
+        %a{:href => "/#{params[:environment]}/#{@max_num}"} >|

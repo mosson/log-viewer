@@ -1,0 +1,13 @@
+!!!
+%html  
+  %head
+    %title= content_for?(:title) ? yield(:title) : "Log Tracker"
+    %link{ :rel => "stylesheet", :href =>"../css/style.css" }
+    %link{ :rel => "stylesheet", :href =>"http://yui.yahooapis.com/2.9.0/build/reset/reset-min.css" }
+  %body
+    %header
+      %a.logo{:href => "/"}
+        %span LOG TRACKER
+        %span.updated-date Last Updated At: #{Log.first.updated}
+    = yield
+    

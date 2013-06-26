@@ -1,0 +1,13 @@
+require './app'
+
+namespace :db do
+  task :migrate do
+  	puts "migrating..."
+  	`ruby db/migrate/migration.rb`
+	end
+
+	task :seed do
+		puts "inserting seeds..."
+		`ruby db/seeds_csv.rb`
+	end
+end
