@@ -45,7 +45,7 @@
 
           - ["backtrace", "status_code", "ip_address", "timestamp"].each do |search_style|          
             %li
-              %span.sub-title #{search_style}
+              %span.sub-title #{search_style.upcase.sub("_", " ")}
               %form{:action => "/#{params[:environment]}", :method => "post"}
 
                 - if search_style == "timestamp"
