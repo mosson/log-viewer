@@ -6,7 +6,7 @@ namespace :db do
   	`ruby db/migrate/migration.rb`
 	end
 
-	task :seeds do
+	task :seed do
 		puts "inserting seeds..."
 		`ruby db/seeds_csv.rb`
 	end
